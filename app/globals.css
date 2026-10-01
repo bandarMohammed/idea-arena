@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark-first palette. Values are raw RGB channels for <alpha-value>. */
+    --canvas: 9 10 13;
+    --surface: 15 17 22;
+    --elevated: 21 24 31;
+    --line: 33 37 46;
+    --line-strong: 48 54 66;
+
+    --ink: 237 240 245;
+    --muted: 154 161 175;
+    --faint: 110 117 131;
+
+    --brand: 109 128 255;
+    --brand-soft: 24 28 56;
+    --brand-ink: 255 255 255;
+
+    --ok: 52 199 134;
+    --warn: 237 170 54;
+    --danger: 239 83 80;
+    --critical: 219 58 110;
+
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: rgb(var(--line));
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    background-color: rgb(var(--canvas));
+    color: rgb(var(--ink));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible, consistent focus ring for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--brand));
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: rgb(var(--brand) / 0.32);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--line-strong));
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--faint));
+    background-clip: content-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-soft;
+  }
+
+  .input-base {
+    @apply w-full rounded-xl border border-line bg-elevated px-3.5 py-2.5 text-sm text-ink
+      placeholder:text-faint transition-colors
+      hover:border-line-strong focus:border-brand focus:outline-none
+      focus-visible:outline-none focus:ring-2 focus:ring-brand/30
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .label-base {
+    @apply mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted;
+  }
+
+  .hint {
+    @apply mt-1.5 text-xs leading-relaxed text-faint;
+  }
+
+  /* Grid backdrop used on the empty / onboarding states. */
+  .grid-backdrop {
+    background-image:
+      linear-gradient(to right, rgb(var(--line) / 0.55) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--line) / 0.55) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+  }
+}
+
+@layer utilities {
+  .scrollbar-stable {
+    scrollbar-gutter: stable;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* --- Markdown message body ------------------------------------------- */
+.markdown {
+  @apply text-[15px] leading-7 text-ink;
+}
+
+.markdown > * + * {
+  @apply mt-4;
+}
+
+.markdown h1 {
+  @apply mt-6 text-xl font-semibold tracking-tight;
+}
+
+.markdown h2 {
+  @apply mt-6 text-lg font-semibold tracking-tight;
+}
+
+.markdown h3 {
+  @apply mt-5 text-base font-semibold;
+}
+
+.markdown p {
+  @apply leading-7;
+}
+
+.markdown a {
+  @apply font-medium text-brand underline underline-offset-4 hover:opacity-80;
+}
+
+.markdown ul {
+  @apply list-disc space-y-1.5 pl-5 marker:text-faint;
+}
+
+.markdown ol {
+  @apply list-decimal space-y-1.5 pl-5 marker:text-faint;
+}
+
+.markdown li > ul,
+.markdown li > ol {
+  @apply mt-1.5;
+}
+
+.markdown blockquote {
+  @apply border-l-2 border-line-strong pl-4 italic text-muted;
+}
+
+.markdown hr {
+  @apply border-line;
+}
+
+.markdown strong {
+  @apply font-semibold text-ink;
+}
+
+.markdown code {
+  @apply rounded-md border border-line bg-elevated px-1.5 py-0.5 font-mono text-[0.85em] text-ink;
+}
+
+.markdown pre code {
+  @apply border-0 bg-transparent p-0 text-[13px];
+}
+
+.markdown table {
+  @apply block w-full overflow-x-auto border-collapse text-sm;
+}
+
+.markdown th,
+.markdown td {
+  @apply border border-line px-3 py-2 text-left align-top;
+}
+
+.markdown th {
+  @apply bg-elevated font-semibold;
+}
+
+.markdown img {
+  @apply rounded-xl border border-line;
+}
